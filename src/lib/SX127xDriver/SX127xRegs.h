@@ -117,22 +117,23 @@ typedef enum
 #define SX127X_REG_VERSION 0x42
 
 #if defined(RADIO_SX1272)
-    #define SX127X_VERSION 0x22
+#define SX127X_VERSION 0x22
 #else
-    #define SX127X_VERSION 0x12
+#define SX127X_VERSION 0x12
 #endif
 
 // SX127X_REG_PA_CONFIG
-#define SX127X_PA_SELECT_RFO 0b00000000    //  7     7     RFO pin output, power limited to +14 dBm
-#define SX127X_PA_SELECT_BOOST 0b10000000  //  7     7     PA_BOOST pin output, power limited to +20 dBm
-#define SX127X_PA_POWER_MASK 0b01111111    //  6     0     PA MAX_POWER and OUTPUT_POWER combined bit mask
+#define SX127X_PA_SELECT_RFO 0b00000000           //  7     7     RFO pin output, power limited to +14 dBm
+#define SX127X_PA_SELECT_BOOST 0b10000000         //  7     7     PA_BOOST pin output, power limited to +20 dBm
+#define SX127X_PA_POWER_MASK 0b01111111           //  6     0     PA MAX_POWER and OUTPUT_POWER combined bit mask
 #define SX127X_MAX_OUTPUT_POWER_RFO_HF 0b00000000 //       Max output power when using RFO_HF
-#define SX127X_MAX_OUTPUT_POWER 0b01110000 //              Enable max output power
+#define SX127X_MAX_OUTPUT_POWER 0b01110000        //              Enable max output power
 // SX127X_REG_OCP
 #define SX127X_OCP_OFF 0b00000000   //  5     5     PA overload current protection disabled
 #define SX127X_OCP_ON 0b00100000    //  5     5     PA overload current protection enabled
 #define SX127X_OCP_TRIM 0b00001011  //  4     0     OCP current: I_max(OCP_TRIM = 0b1011) = 100 mA
 #define SX127X_OCP_150MA 0b00010010 //  4     0     OCP current: I_max(OCP_TRIM = 10010) = 150 mA
+#define SX127X_OCP_200MA 0b00011111 //  4     0     OCP current: I_max(OCP_TRIM = 0b11111) = 240 mA
 #define SX127X_OCP_MASK 0b00111111
 
 // SX127X_REG_LNA
@@ -158,7 +159,7 @@ typedef enum
 // SX127X_REG_PREAMBLE_MSB + REG_PREAMBLE_LSB
 #define SX127X_PREAMBLE_LENGTH_MSB 0b00000000 //  7     0     2 byte preamble length setting: l_P = PREAMBLE_LENGTH + 4.25
 #define SX127X_PREAMBLE_LENGTH_LSB 0b00001000 //  7     0         where l_p = preamble length
-//#define SX127X_PREAMBLE_LENGTH_LSB                    0b00000100  //  7     0         where l_p = preamble length  //CHANGED
+// #define SX127X_PREAMBLE_LENGTH_LSB                    0b00000100  //  7     0         where l_p = preamble length  //CHANGED
 
 // SX127X_REG_DETECT_OPTIMIZE
 #define SX127X_DETECT_OPTIMIZE_SF_6 0b00000101    //  2     0     SF6 detection optimization
@@ -216,20 +217,20 @@ typedef enum
 #define SX127X_FIFO_RX_BASE_ADDR_MAX 0b00000000 //  7     0     allocate the entire FIFO buffer for RX only
 
 // SX127X_REG_SYNC_WORD
-//#define SX127X_SYNC_WORD 0xC8 //  200   0     default ExpressLRS sync word - 200Hz
-#define SX127X_SYNC_WORD                              0x12        //  18    0     default LoRa sync word
+// #define SX127X_SYNC_WORD 0xC8 //  200   0     default ExpressLRS sync word - 200Hz
+#define SX127X_SYNC_WORD 0x12         //  18    0     default LoRa sync word
 #define SX127X_SYNC_WORD_LORAWAN 0x34 //  52    0     sync word reserved for LoRaWAN networks
 
 #define IRQpin 26
 
-///Added by Sandro
+/// Added by Sandro
 #define SX127x_TXCONTINUOUSMODE_MASK 0xF7
 #define SX127x_TXCONTINUOUSMODE_ON 0x08
 #define SX127x_TXCONTINUOUSMODE_OFF 0x00
 #define SX127x_PPMOFFSET 0x27
 
 ///// SX1278 Regs /////
-//SX1278 specific register map
+// SX1278 specific register map
 #define SX1278_REG_MODEM_CONFIG_3 0x26
 #define SX1278_REG_TCXO 0x4B
 #define SX1278_REG_PA_DAC 0x4D
@@ -240,48 +241,47 @@ typedef enum
 #define SX1278_REG_AGC_THRESH_3 0x64
 #define SX1278_REG_PLL 0x70
 
-//SX1278 LoRa modem settings
-//SX1278_REG_OP_MODE                                                  MSB   LSB   DESCRIPTION
+// SX1278 LoRa modem settings
+// SX1278_REG_OP_MODE                                                  MSB   LSB   DESCRIPTION
 #define SX1278_HIGH_FREQ 0b00000000 //  3     3     access HF test registers
 #define SX1278_LOW_FREQ 0b00001000  //  3     3     access LF test registers
 
-//SX1278_REG_FRF_MSB + REG_FRF_MID + REG_FRF_LSB
+// SX1278_REG_FRF_MSB + REG_FRF_MID + REG_FRF_LSB
 #define SX1278_FRF_MSB 0x6C //  7     0     carrier frequency setting: f_RF = (F(XOSC) * FRF)/2^19
 #define SX1278_FRF_MID 0x80 //  7     0         where F(XOSC) = 32 MHz
 #define SX1278_FRF_LSB 0x00 //  7     0               FRF = 3 byte value of FRF registers
 
-//SX1278_REG_PA_CONFIG
+// SX1278_REG_PA_CONFIG
 #define SX1278_MAX_POWER 0b01110000 //  6     4     max power: P_max = 10.8 + 0.6*MAX_POWER [dBm]; P_max(MAX_POWER = 0b111) = 15 dBm
-//#define SX1278_MAX_POWER                              0b00010000  //  6     4     changed
+// #define SX1278_MAX_POWER                              0b00010000  //  6     4     changed
 
-//SX1278_REG_LNA
+// SX1278_REG_LNA
 #define SX1278_LNA_BOOST_LF_OFF 0b00000000 //  4     3     default LNA current
 
-//SX127X_REG_MODEM_CONFIG_1
+// SX127X_REG_MODEM_CONFIG_1
 #if defined(RADIO_SX1272)
-    #define SX127x_HEADER_EXPL_MODE 0b00000000 //  2     2     explicit header mode
-    #define SX127x_HEADER_IMPL_MODE 0b00000100 //  2     2     implicit header mode
+#define SX127x_HEADER_EXPL_MODE 0b00000000 //  2     2     explicit header mode
+#define SX127x_HEADER_IMPL_MODE 0b00000100 //  2     2     implicit header mode
 #else
-    #define SX127x_HEADER_EXPL_MODE 0b00000000 //  0     0     explicit header mode
-    #define SX127x_HEADER_IMPL_MODE 0b00000001 //  0     0     implicit header mode
+#define SX127x_HEADER_EXPL_MODE 0b00000000 //  0     0     explicit header mode
+#define SX127x_HEADER_IMPL_MODE 0b00000001 //  0     0     implicit header mode
 #endif
 
-//SX1278_REG_MODEM_CONFIG_2
+// SX1278_REG_MODEM_CONFIG_2
 #define SX1278_RX_CRC_MODE_OFF 0b00000000 //  2     2     CRC disabled
 #define SX1278_RX_CRC_MODE_ON 0b00000100  //  2     2     CRC enabled
 #define SX1278_RX_CRC_MODE_MASK 0b00000100
 
-//SX1272_REG_MODEM_CONFIG_1
+// SX1272_REG_MODEM_CONFIG_1
 #define SX1272_RX_CRC_MODE_OFF 0b00000000 //  1     1     CRC disabled
 #define SX1272_RX_CRC_MODE_ON 0b00000010  //  1     1     CRC enabled
 #define SX1272_RX_CRC_MODE_MASK 0b00000010
 
-//SX1278_REG_MODEM_CONFIG_3
+// SX1278_REG_MODEM_CONFIG_3
 #define SX1278_LOW_DATA_RATE_OPT_OFF 0b00000000 //  3     3     low data rate optimization disabled
 #define SX1278_LOW_DATA_RATE_OPT_ON 0b00001000  //  3     3     low data rate optimization enabled
 #define SX1278_AGC_AUTO_OFF 0b00000000          //  2     2     LNA gain set by REG_LNA
 #define SX1278_AGC_AUTO_ON 0b00000100           //  2     2     LNA gain set by internal AGC loop
-
 
 #define ERR_NONE 0x00
 #define ERR_CHIP_NOT_FOUND 0x01
